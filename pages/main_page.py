@@ -16,7 +16,7 @@ class MainPage (BasePage):
 
     @allure.step('Проверка нахождения на странице конструктора')
     def check_being_on_main_constructor_page(self):
-        elem = self.find_element_with_wait(MainPageLocators.INGREDIENT_BUTTON)
+        elem = self.find_element_with_wait(MainPageLocators.INGREDIENT_BUTTON_1)
         return elem
     
     @allure.step('Переход на страницу "Лента заказов" кликом на кнопку "Лента заказов"')
@@ -31,7 +31,7 @@ class MainPage (BasePage):
     
     @allure.step('Проверка клика на ингредиент')
     def check_click_on_ingredient(self):
-        self.click_to_element(MainPageLocators.INGREDIENT_BUTTON)
+        self.click_to_element(MainPageLocators.INGREDIENT_BUTTON_1)
 
     @allure.step('Проверка клика на ингредиент и открытие попапа')
     def check_popup_opens_after_click_on_ingredient(self):
@@ -44,7 +44,7 @@ class MainPage (BasePage):
         
     @allure.step('Перетаскивание ингредиента')
     def check_adding_ingredient(self):
-        self.drag_and_drop (MainPageLocators.INGREDIENT_BUTTON, MainPageLocators.ORDER_INGREDIENT_FIELD)
+        self.drag_and_drop (MainPageLocators.INGREDIENT_BUTTON_1, MainPageLocators.ORDER_INGREDIENT_FIELD)
 
     @allure.step('Проверка каунтера ингредиента после добавления ингредиента')
     def check_counter_of_ingredient_after_adding_ingredient(self):
@@ -73,4 +73,4 @@ class MainPage (BasePage):
         self.user_login(PersonalPageLocators.EMAIL_LOGIN_FIELD, '555@email.com')
         self.user_login(PersonalPageLocators.PASSWORD_LOGIN_FIELD, '12345Q')
         self.click_to_element(PersonalPageLocators.LOGIN_BUTTON)
-        self.find_element_with_wait(MainPageLocators.INGREDIENT_BUTTON) #ожидание прогрузки страницы
+        self.find_element_with_wait(MainPageLocators.INGREDIENT_BUTTON_1) #ожидание прогрузки страницы

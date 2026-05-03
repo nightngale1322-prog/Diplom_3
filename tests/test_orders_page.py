@@ -12,23 +12,13 @@ class TestOrdersPage:
         orders_page.check_click_on_order()
         assert orders_page.check_order_popup_after_click()
 
-    @allure.title ("Проверка, что заказ пользователя приходит в ленту 'В работе'") #может таймаутнуть из-за долгого появления номера заказа (проблема сайта)
-    def test_order_created_goes_to_working_list(self,driver):
+    @allure.title ("Проверка, что заказ пользователя из истории есть в ленте 'В работе'") #может таймаутнуть из-за долгого появления номера заказа (проблема сайта)
+    def test_order_from_history_is_in_orders_list(self,driver):
         orders_page = OrdersPage(driver)
         orders_page.go_to_url(TestURL.main_constructor_page_url)
         orders_page.check_order_after_log_in()
-        orders_page.go_to_url(TestURL.orders_page_url)
-        assert orders_page.check_find_order_number_in_list_awaiting_orders()
-
-
-    @allure.title ("Проверка, что заказ пользователя приходит в ленту заказов") #может таймаутнуть из-за долгого появления номера заказа (проблема сайта)
-    def test_order_created_goes_to_orders_list(self,driver):
-        orders_page = OrdersPage(driver)
-        orders_page.go_to_url(TestURL.main_constructor_page_url)
-        orders_page.check_order_after_log_in()
-        orders_page.go_to_url(TestURL.orders_page_url)
-        assert orders_page.check_find_order_number_in_list_orders_feed()
-        
+        assert orders_page.check_order_in_orders_feed()
+     
 
     @allure.title ("Проверка увеличения счетчика 'Выполнено за все время' после заказа")
     def test_order_created_goes_to_all_orders_count(self,driver):

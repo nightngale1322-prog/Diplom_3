@@ -46,7 +46,7 @@ class PersonalPage(BasePage):
         self.user_login(PersonalPageLocators.EMAIL_LOGIN_FIELD, '555@email.com')
         self.user_login(PersonalPageLocators.PASSWORD_LOGIN_FIELD, '12345Q')
         self.click_to_element(PersonalPageLocators.LOGIN_BUTTON)
-        self.find_element_with_wait(MainPageLocators.INGREDIENT_BUTTON) #ожидание прогрузки страницы
+        self.find_element_with_wait(MainPageLocators.INGREDIENT_BUTTON_1) #ожидание прогрузки страницы
 
     @allure.step('Возврат адреса текущей страницы')
     def check_current_url(self):

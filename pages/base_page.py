@@ -8,7 +8,7 @@ from selenium.webdriver import ActionChains
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
-        self.timeout = 120
+        self.timeout = 30
         self.wait = WebDriverWait(self.driver, self.timeout)
         self.url = driver.current_url
     
@@ -25,6 +25,10 @@ class BasePage:
 
     def dissapear_element (self, locator):
         element = self.wait.until_not(expected_conditions.visibility_of_element_located(locator))
+        return element
+    
+    def return_element (self, locator):
+        element = self.wait.until(expected_conditions.visibility_of_element_located(locator)).text()
         return element
     
     def find_elements_with_wait (self, locator):
@@ -57,11 +61,6 @@ class BasePage:
         return self.find_element_with_wait(locator).text
     
         
-    
-    def switch_to_different_window(self,locator):
-        window_list = self.driver.window_handles
-        self.driver.switch_to.window(window_list[-1])
-        self.wait.until(expected_conditions.presence_of_element_located(locator))
 
     def drag_and_drop(self, locator_from, locator_to):
         action = ActionChains(self.driver)

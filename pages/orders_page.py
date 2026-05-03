@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 import pytest
 import allure
+import data
 from urls import TestURL
 from pages.base_page import BasePage
 from locators.main_page_locators import MainPageLocators
@@ -33,26 +34,34 @@ class OrdersPage (BasePage):
 
     @allure.step('Создание заказа с залогином')
     def check_order_after_log_in(self):
-        self.drag_and_drop(MainPageLocators.INGREDIENT_BUTTON,MainPageLocators.ORDER_INGREDIENT_FIELD)
-        self.click_to_element(MainPageLocators.ORDER_BUTTON_NO_LOGIN)
-        self.user_login(PersonalPageLocators.EMAIL_LOGIN_FIELD, '555@email.com')
-        self.user_login(PersonalPageLocators.PASSWORD_LOGIN_FIELD, '12345Q')
-        self.click_to_element(PersonalPageLocators.LOGIN_BUTTON)
-        self.click_to_element(MainPageLocators.ORDER_PROGRESS_BUTTON)
-
-    @allure.step('Поиск номера заказа в "В работе"')
-    def check_find_order_number_in_list_awaiting_orders(self):
-        self.dissapear_element(OrderPageLocators.ORDERS_IN_PROGRESS)
-        list = self.find_elements_with_wait(OrderPageLocators.ORDERS_IN_PROGRESS_NUMBER)
-        order = list[0]
-        return order
+        if data.DRIVER_NAME == 'firefox':
+            self.drag_and_drop(MainPageLocators.INGREDIENT_BUTTON_1,MainPageLocators.ORDER_INGREDIENT_FIELD)
+            self.click_to_element(MainPageLocators.ORDER_BUTTON_NO_LOGIN)
+            self.user_login(PersonalPageLocators.EMAIL_LOGIN_FIELD, '555@email.com')
+            self.user_login(PersonalPageLocators.PASSWORD_LOGIN_FIELD, '12345Q')
+            self.click_to_element(PersonalPageLocators.LOGIN_BUTTON)
+            self.click_to_element(MainPageLocators.ORDER_PROGRESS_BUTTON)
+        elif data.DRIVER_NAME == 'chrome':
+            self.drag_and_drop(MainPageLocators.INGREDIENT_BUTTON_2,MainPageLocators.ORDER_INGREDIENT_FIELD)
+            self.click_to_element(MainPageLocators.ORDER_BUTTON_NO_LOGIN)
+            self.user_login(PersonalPageLocators.EMAIL_LOGIN_FIELD, '999@email.com')
+            self.user_login(PersonalPageLocators.PASSWORD_LOGIN_FIELD, '54321Q')
+            self.click_to_element(PersonalPageLocators.LOGIN_BUTTON)
+            self.click_to_element(MainPageLocators.ORDER_PROGRESS_BUTTON)
+        else:
+            pass
     
-    @allure.step('Поиск номера заказа в ленте заказа')
-    def check_find_order_number_in_list_orders_feed(self):
-        list_of_working_orders = self.find_elements_with_wait(OrderPageLocators.ORDERS_IN_PROGRESS)
-        order = list_of_working_orders[0]
-        order_text = order.text.strip()
-        locator = (By.XPATH, f"//div[contains(text(), '{order_text}')]")
-        feed_orders = self.find_elements_with_wait(locator)
+    @allure.step('Проверка, что заказ пользователя есть в ленте заказов')
+    def check_order_in_orders_feed(self):
+        profile_order = self.find_element_with_wait(MainPageLocators.ORDER_POPUP_ORDER_NUMBER)
+        order_text = profile_order.text.strip()  
+        self.go_to_url(TestURL.orders_page_url)
+
+        locator = (
+            By.XPATH,
+            f".//div/div/ul[@class = 'OrderFeed_orderListReady__1YFem OrderFeed_orderList__cBvyi']/li[contains(text(), '{order_text}')]"
+    )
+    
+        feed_orders = self.find_element_with_wait(locator)
 
         return feed_orders

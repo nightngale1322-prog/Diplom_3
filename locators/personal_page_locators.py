@@ -8,3 +8,4 @@ class PersonalPageLocators:
     PASSWORD_LOGIN_FIELD = By.XPATH, './/div/div/input[@name="Пароль"]'
     LOGIN_BUTTON = By.XPATH, './/form/button[contains(text(),"Войти")]'
     PROFILE_BUTTON = By.XPATH, './/nav/ul/li/a[@href="/account/profile"]'
+    PROFILE_ORDER = By.XPATH, './/ul/li/a/div/p[contains(text(),"#0377126")]'
