@@ -4,8 +4,8 @@ class OrderPageLocators: #"Лента заказов"
     ORDER_BUTTON = By.CLASS_NAME, 'OrderHistory_link__1iNby'
     ORDER_INFO_POPUP = By.CLASS_NAME, 'Modal_list__2sHWc'
     BURGER_ORDERED_LIST = By.XPATH, './/a/div/p[@class="text text_type_digits-default"]'
-    ORDERS_COUNT = By.CSS_SELECTOR, 'div.undefined:nth-child(2) > p:nth-child(2)'
-    ORDERS_TODAY_COUNT = By.CSS_SELECTOR, '.OrderFeed_ordersData__1L6Iv > div:nth-child(3) > p:nth-child(2)'
+    ORDERS_COUNT = By.XPATH, "//p[text()='Выполнено за все время:']""/following-sibling::p[contains(@class, 'OrderFeed_number')]"
+    ORDERS_TODAY_COUNT = By.XPATH,"//p[text()='Выполнено за сегодня:']""/following-sibling::p[contains(@class, 'OrderFeed_number')]"
     ORDERS_IN_PROGRESS = By.XPATH, './/div/div/div[1]/ul[@class = "OrderFeed_orderListReady__1YFem OrderFeed_orderList__cBvyi"]/li'
     ORDER_PAGE_HEADER = By.CSS_SELECTOR, 'h1.text'
     ORDER_POPUP_WINDOW = By.CSS_SELECTOR, 'html body div#root div.App_App__aOmNj section.Modal_modal_opened__3ISw4.Modal_modal__P3_V5 div.Modal_modal__container__Wo2l_'

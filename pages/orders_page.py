@@ -37,7 +37,7 @@ class OrdersPage (BasePage):
     @allure.step('Создание заказа с залогином')
     def check_order_after_log_in(self):
         if data.DRIVER_NAME == 'firefox':
-            self.drag_and_drop(MainPageLocators.INGREDIENT_BUTTON_1,MainPageLocators.ORDER_INGREDIENT_FIELD)
+            self.drag_and_drop_java(MainPageLocators.INGREDIENT_BUTTON_1,MainPageLocators.ORDER_INGREDIENT_FIELD)
             self.click_to_element(MainPageLocators.ORDER_BUTTON_NO_LOGIN)
             self.user_login(PersonalPageLocators.EMAIL_LOGIN_FIELD, '555@email.com')
             self.user_login(PersonalPageLocators.PASSWORD_LOGIN_FIELD, '12345Q')
@@ -89,15 +89,7 @@ class OrdersPage (BasePage):
         return orders_list
 
     
-        
-    @allure.step("Рефреш для Firefox")
-    def check_refresh_for_orders(self):
-        if data.DRIVER_NAME == 'firefox':
-            self.refresh_for_orders(OrderPageLocators.ORDERS_TODAY_COUNT)
-        else: 
-            pass
-
-
+      
         
     @allure.step('Получение номера заказа из истории заказа')
     def check_go_to_history_find_order(self):
@@ -117,10 +109,19 @@ class OrdersPage (BasePage):
     
     @allure.step("Логин через кнопку заказа без заказа")
     def check_login_no_order(self):
-        self.go_to_url(TestURL.main_constructor_page_url)
-        self.drag_and_drop(MainPageLocators.INGREDIENT_BUTTON_2,MainPageLocators.ORDER_INGREDIENT_FIELD)
-        self.click_to_element(MainPageLocators.ORDER_BUTTON_NO_LOGIN)
-        self.user_login(PersonalPageLocators.EMAIL_LOGIN_FIELD, '999@email.com')
-        self.user_login(PersonalPageLocators.PASSWORD_LOGIN_FIELD, '54321Q')
-        self.click_to_element(PersonalPageLocators.LOGIN_BUTTON)
-        self.find_element_with_wait(MainPageLocators.INGREDIENT_BUTTON_1)
+        if data.DRIVER_NAME == 'chrome':
+            self.go_to_url(TestURL.main_constructor_page_url)
+            self.drag_and_drop(MainPageLocators.INGREDIENT_BUTTON_2,MainPageLocators.ORDER_INGREDIENT_FIELD)
+            self.click_to_element(MainPageLocators.ORDER_BUTTON_NO_LOGIN)
+            self.user_login(PersonalPageLocators.EMAIL_LOGIN_FIELD, '999@email.com')
+            self.user_login(PersonalPageLocators.PASSWORD_LOGIN_FIELD, '54321Q')
+            self.click_to_element(PersonalPageLocators.LOGIN_BUTTON)
+            self.find_element_with_wait(MainPageLocators.INGREDIENT_BUTTON_1)
+        else:
+            self.go_to_url(TestURL.main_constructor_page_url)
+            self.drag_and_drop_java(MainPageLocators.INGREDIENT_BUTTON_2,MainPageLocators.ORDER_INGREDIENT_FIELD)
+            self.click_to_element(MainPageLocators.ORDER_BUTTON_NO_LOGIN)
+            self.user_login(PersonalPageLocators.EMAIL_LOGIN_FIELD, '999@email.com')
+            self.user_login(PersonalPageLocators.PASSWORD_LOGIN_FIELD, '54321Q')
+            self.click_to_element(PersonalPageLocators.LOGIN_BUTTON)
+            self.find_element_with_wait(MainPageLocators.INGREDIENT_BUTTON_1)

@@ -81,3 +81,48 @@ class BasePage:
     def refresh_for_orders(self,locator):
         self.driver.refresh()
         self.scroll_into_view(locator)
+
+
+    def drag_and_drop_java(self, locator_from, locator_to):
+
+        self.find_element_with_wait(locator_from)
+
+        self.find_element_with_wait(locator_to)
+
+        element_from = self.driver.find_element(*locator_from)
+
+        element_to = self.driver.find_element(*locator_to)
+
+        self.driver.execute_script("""
+
+        var source = arguments[0];
+
+        var target = arguments[1];
+
+        var evt = document.createEvent("DragEvent");
+
+        evt.initMouseEvent("dragstart", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+
+        source.dispatchEvent(evt);
+
+        evt = document.createEvent("DragEvent");
+
+        evt.initMouseEvent("dragenter", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+
+        target.dispatchEvent(evt);
+
+        evt = document.createEvent("DragEvent");evt.initMouseEvent("dragover", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+
+target.dispatchEvent(evt);
+
+        evt = document.createEvent("DragEvent");
+
+        evt.initMouseEvent("drop", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+
+        target.dispatchEvent(evt);
+
+        evt = document.createEvent("DragEvent");
+
+        evt.initMouseEvent("dragend", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+
+        source.dispatchEvent(evt); """, element_from, element_to)

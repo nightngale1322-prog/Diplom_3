@@ -13,7 +13,6 @@ class TestOrdersPage:
         orders_page.check_order_after_log_in()
         order_number = orders_page.check_order_number_in_popup()
         orders_page.go_to_url(TestURL.orders_page_url)
-        orders_page.check_refresh_for_orders()
         all_orders = orders_page.check_return_orders_list()
         assert order_number in all_orders
 
@@ -36,7 +35,6 @@ class TestOrdersPage:
         orders_page.go_to_url(TestURL.main_constructor_page_url)
         orders_page.check_order_after_log_in()
         orders_page.go_to_url(TestURL.orders_page_url)
-        orders_page.check_refresh_for_orders()
         new_counter = orders_page.check_all_count_going_up(previous_value=counter_all_beginning)
         assert new_counter > counter_all_beginning  
 
@@ -49,7 +47,6 @@ class TestOrdersPage:
         orders_page.go_to_url(TestURL.main_constructor_page_url)
         orders_page.check_order_after_log_in()
         orders_page.go_to_url(TestURL.orders_page_url)
-        orders_page.check_refresh_for_orders()
         new_counter = orders_page.check_today_count_going_up(previous_value=counter_today_beginning)
         assert orders_page.check_today_count_going_up() > counter_today_beginning
 

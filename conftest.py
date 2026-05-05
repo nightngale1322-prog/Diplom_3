@@ -4,13 +4,6 @@ import data
 from selenium.webdriver.firefox.options import Options
 
 
-import pytest
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
-import data  # предполагаем, что модуль data доступен
-
-
 @pytest.fixture(params=["chrome", "firefox"])
 def driver(request):
     if request.param == 'firefox':
@@ -44,7 +37,7 @@ def driver(request):
         driver = webdriver.Firefox(options=options)
 
     elif request.param == 'chrome':
-        options = ChromeOptions()
+        options = webdriver.ChromeOptions()
 
         # Отключаем кэш и оптимизируем для тестов
         options.add_argument('--disable-cache')
