@@ -8,7 +8,7 @@ from selenium.webdriver import ActionChains
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
-        self.timeout = 30
+        self.timeout = 60
         self.wait = WebDriverWait(self.driver, self.timeout)
         self.url = driver.current_url
     
@@ -19,8 +19,14 @@ class BasePage:
         self.wait.until (expected_conditions.visibility_of_element_located(locator))
         return self.driver.find_element(*locator)
     
+    
     def find_element(self, locator):
         element = self.wait.until (expected_conditions.presence_of_element_located(locator))
+        return element
+    
+
+    def find_elements(self, locator):
+        element = self.wait.until (expected_conditions.presence_of_all_elements_located(locator))
         return element
 
     def dissapear_element (self, locator):
@@ -58,7 +64,7 @@ class BasePage:
 
 
     def get_text_from_element(self,locator):
-        return self.find_element_with_wait(locator).text
+        return self.find_element_with_wait(locator).get_attribute('innerText')
     
         
 
@@ -72,4 +78,6 @@ class BasePage:
     def user_login(self, locator, info):
         self.send_keys_to_element_with_click(locator, info)
 
-    
+    def refresh_for_orders(self,locator):
+        self.driver.refresh()
+        self.scroll_into_view(locator)

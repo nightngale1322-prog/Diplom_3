@@ -21,16 +21,18 @@ class OrdersPage (BasePage):
         return popup
     
     @allure.step('Проверка счетчика сегодняшних заказов')
-    def check_today_count_going_up(self):
+    def check_today_count_going_up(self, previous_value=None):
+        if previous_value is not None:
+            self.wait.until(lambda driver: self.get_text_from_element(OrderPageLocators.ORDERS_TODAY_COUNT) > str(previous_value))
         count_number = self.get_text_from_element(OrderPageLocators.ORDERS_TODAY_COUNT)
-        count_number_int = int (count_number)
-        return count_number_int
+        return int(count_number)
     
     @allure.step('Проверка счетчика заказов за все время')
-    def check_all_count_going_up(self):
+    def check_all_count_going_up(self, previous_value=None):
+        if previous_value is not None:
+            self.wait.until(lambda driver: self.get_text_from_element(OrderPageLocators.ORDERS_COUNT) > str(previous_value))
         count_number = self.get_text_from_element(OrderPageLocators.ORDERS_COUNT)
-        count_number_int = int (count_number)
-        return count_number_int
+        return int(count_number)
 
     @allure.step('Создание заказа с залогином')
     def check_order_after_log_in(self):
@@ -51,17 +53,74 @@ class OrdersPage (BasePage):
         else:
             pass
     
-    @allure.step('Проверка, что заказ пользователя есть в ленте заказов')
-    def check_order_in_orders_feed(self):
-        profile_order = self.find_element_with_wait(MainPageLocators.ORDER_POPUP_ORDER_NUMBER)
-        order_text = profile_order.text.strip()  
-        self.go_to_url(TestURL.orders_page_url)
-
-        locator = (
-            By.XPATH,
-            f".//div/div/ul[@class = 'OrderFeed_orderListReady__1YFem OrderFeed_orderList__cBvyi']/li[contains(text(), '{order_text}')]"
-    )
+    @allure.step('Возврат номера заказа из попапа')
+    def check_order_number_in_popup(self):
+        profile_order = self.find_element_with_wait(MainPageLocators.ORDER_POPUP_ORDER_NUMBER).text
+        if profile_order != "9999":
+            return profile_order
+        else:
+            self.wait.until (lambda driver: driver.find_element(*MainPageLocators.ORDER_POPUP_ORDER_NUMBER).text != "9999")
+        real_profile_order = self.find_element_with_wait(MainPageLocators.ORDER_POPUP_ORDER_NUMBER).text
+        formated_new_number = '#0' + real_profile_order
+        return formated_new_number
+        
     
-        feed_orders = self.find_element_with_wait(locator)
+    @allure.step ('Поиск номеров заказов на странице заказов')
+    def check_return_orders_list(self):
+        orders_el = self.find_elements(OrderPageLocators.ORDERS_IN_WORK_NUMBER)
+        orders_list = []
+        for element in orders_el:
+            order_number = element.text.strip().lstrip('#').lstrip('0')
+            if not order_number:
+                order_number = '0'
+            orders_list.append(order_number)
+        return orders_list
+        
 
-        return feed_orders
+    @allure.step ('Поиск номеров завершенных заказов на странице заказов')
+    def check_return_orders_list(self):
+        orders_el = self.find_elements(OrderPageLocators.BURGER_ORDERED_LIST)
+        orders_list = []
+        for element in orders_el:
+            order_number = element.text.strip()
+            if not order_number:
+                order_number = '0'
+            orders_list.append(order_number)
+        return orders_list
+
+    
+        
+    @allure.step("Рефреш для Firefox")
+    def check_refresh_for_orders(self):
+        if data.DRIVER_NAME == 'firefox':
+            self.refresh_for_orders(OrderPageLocators.ORDERS_TODAY_COUNT)
+        else: 
+            pass
+
+
+        
+    @allure.step('Получение номера заказа из истории заказа')
+    def check_go_to_history_find_order(self):
+        self.check_login_no_order()
+        self.go_to_url(TestURL.orders_page_url)
+        self.go_to_url(TestURL.lk_url)
+        self.click_to_element(PersonalPageLocators.ORDERS_HISTORY_BUTTON)
+        orders_el = self.find_elements(PersonalPageLocators.PROFILE_ORDER)
+        orders_list = []
+        for element in orders_el:
+            order_number = element.text.strip().lstrip('#')
+            orders_list.append(order_number)
+            if not order_number:
+                order_number = '0'
+                orders_list.append(order_number)
+        return orders_list[-1]
+    
+    @allure.step("Логин через кнопку заказа без заказа")
+    def check_login_no_order(self):
+        self.go_to_url(TestURL.main_constructor_page_url)
+        self.drag_and_drop(MainPageLocators.INGREDIENT_BUTTON_2,MainPageLocators.ORDER_INGREDIENT_FIELD)
+        self.click_to_element(MainPageLocators.ORDER_BUTTON_NO_LOGIN)
+        self.user_login(PersonalPageLocators.EMAIL_LOGIN_FIELD, '999@email.com')
+        self.user_login(PersonalPageLocators.PASSWORD_LOGIN_FIELD, '54321Q')
+        self.click_to_element(PersonalPageLocators.LOGIN_BUTTON)
+        self.find_element_with_wait(MainPageLocators.INGREDIENT_BUTTON_1)

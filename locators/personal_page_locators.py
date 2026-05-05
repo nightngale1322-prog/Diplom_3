@@ -6,6 +6,6 @@ class PersonalPageLocators:
     LOGOUT_BUTTON = By.XPATH, './/li/button[contains(text(),"Выход")]'
     EMAIL_LOGIN_FIELD = By.XPATH, './/fieldset/div/div/input'
     PASSWORD_LOGIN_FIELD = By.XPATH, './/div/div/input[@name="Пароль"]'
-    LOGIN_BUTTON = By.XPATH, './/form/button[contains(text(),"Войти")]'
+    LOGIN_BUTTON = By.CSS_SELECTOR, '.button_button__33qZ0'
     PROFILE_BUTTON = By.XPATH, './/nav/ul/li/a[@href="/account/profile"]'
-    PROFILE_ORDER = By.XPATH, './/ul/li/a/div/p[contains(text(),"#0377126")]'
+    PROFILE_ORDER = By.XPATH, './/div/ul/li/a/div[@class="OrderHistory_textBox__3lgbs mb-6"]/p[starts-with(text(), "#")]'

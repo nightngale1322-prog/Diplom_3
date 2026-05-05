@@ -11,6 +11,7 @@ class MainPageLocators: # все,что находится на "Констру�
     INGREDIENT_COUNTER = By.XPATH, './/div/p[contains(text(),"2")]'
     ORDER_PROGRESS_BUTTON = By.XPATH, './/section/div/button[contains(text(),"Оформить заказ")]'
     ORDER_POPUP_IDENTIFICATOR = By.XPATH, './/div/div/p[contains(text(),"идентификатор заказа")]'
-    ORDER_POPUP_ORDER_NUMBER = By.XPATH, './/section/div/div/h2'
+    ORDER_POPUP_ORDER_NUMBER = By.CSS_SELECTOR, '.Modal_modal__title_shadow__3ikwq'
     ORDER_BUTTON_NO_LOGIN = By.XPATH, './/div/button[contains(text(),"Войти в аккаунт")]'
     ORDER_INGREDIENT_FIELD = By.XPATH, './/div/span/span[contains(text(),"Перетяните булочку сюда (верх)")]'
+
